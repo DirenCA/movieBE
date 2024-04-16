@@ -21,7 +21,7 @@ public class FilmEntry{
     }
 
     public boolean watched(){
-        return watched; //test
+        return watched; //testgit
     }
 
 }
