@@ -16,13 +16,11 @@ public class FilmEntry{
         return title;
     }
 
-    public String getDescription(){
+    public String getGenre(){
         return genre;
     }
 
-    public boolean watched(){
-        return watched; //testgit
-    }
+    public boolean watched(){return watched; }
 
 }
 

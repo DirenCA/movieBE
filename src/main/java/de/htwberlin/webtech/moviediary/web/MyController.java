@@ -11,12 +11,10 @@ public class MyController {
     @GetMapping("/films")
     public List<FilmEntry> getFilms() {
         // Create several FilmEntry objects
-        FilmEntry entry = new FilmEntry("Test", "Description for Test", false);
-        FilmEntry entry1 = new FilmEntry("Test1", "Description for Test1", false);
-        FilmEntry entry2 = new FilmEntry("Test2", "Description for Test2", false);
-        FilmEntry entry3 = new FilmEntry("Test3", "Description for Test3", false);
-        FilmEntry entry4 = new FilmEntry("Test4", "Description for Test4", false);
+        FilmEntry entry = new FilmEntry("Leon", "Action", true);
+        FilmEntry entry1 = new FilmEntry("Der Pate", "Gangster", false);
+        FilmEntry entry2 = new FilmEntry("Avengers", "Superhero", true);
         // Return a list of these objects
-        return List.of(entry, entry1, entry2, entry3, entry4);
+        return List.of(entry, entry1, entry2);
     }
 }
