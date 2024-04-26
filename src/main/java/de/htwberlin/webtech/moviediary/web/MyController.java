@@ -14,8 +14,8 @@ public class MyController {
         FilmEntry entry = new FilmEntry("Leon", "Action", true);
         FilmEntry entry1 = new FilmEntry("Der Pate", "Gangster", false);
         FilmEntry entry2 = new FilmEntry("Avengers", "Superhero", true);
-        FilmEntry entry3 = new FilmEntry("Avatar", "SciFi", true);
+        //FilmEntry entry3 = new FilmEntry("Avatar", "SciFi", true);
         // Return a list of these objects
-        return List.of(entry, entry1, entry2, entry3);
+        return List.of(entry, entry1, entry2);
     }
 }
