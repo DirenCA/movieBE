@@ -15,7 +15,7 @@ EXPOSE 8080
 
 # Copy the executable jar file into the image
 # Ensure that the path to the jar file is correct and matches your build output
-COPY build/libs/moviediary-0.0.1-SNAPSHOT.jar app.jar
+COPY moviediary-0.0.1-SNAPSHOT.jar /app/moviediary.jar
 
 # Run the Spring Boot application when the container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]
