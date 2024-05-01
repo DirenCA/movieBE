@@ -14,11 +14,15 @@ import org.json.JSONObject;
 
 public class FilmEntry {
 
-    private static final String API_KEY = System.getenv("MOVIE_DB_API_KEY");
+    //private static final String API_KEY = System.getenv("MOVIE_DB_API_KEY"); //Hier nehmen wir den Key aus der Umgebungsvariable
     private HttpClient client;
+    private static final String API_KEY = "80e985da0462754417cfb28e3bc443a3";
 
     public FilmEntry() {
         this.client = HttpClient.newHttpClient();
+        if (API_KEY == null) {
+            throw new IllegalArgumentException("MOVIE_DB_API_KEY is not set in the environment variables");
+        }
     }
 
     public List<String> searchFilmsByQuery(String query) throws IOException, InterruptedException {
