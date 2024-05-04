@@ -7,8 +7,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,12 +48,17 @@ public class FilmEntry {
             throw new IOException("Failed to get response from the movie database API");
         }
 
-        JSONObject jsonResponse = new JSONObject(response.body());
-        JSONArray results = jsonResponse.getJSONArray("results");
+        //Das JSON-Objekt parsen
+        //Durch den Object-Mapper kann ich nun
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root = objectMapper.readTree(response.body());
+        JsonNode results = root.path("results");
 
-
-        return results.toList().stream()
-                .map(item -> ((JSONObject)item).getString("title"))
-                .collect(Collectors.toList());
-    }
+        List<String> titles = new ArrayList<>();
+        for (JsonNode result : results) {
+            String title = result.path("title").asText();
+            titles.add(title);
+        }
+        return titles;
+}
 }
