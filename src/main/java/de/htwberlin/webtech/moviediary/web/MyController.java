@@ -14,9 +14,9 @@ public class MyController {
     private FilmEntry filmEntry = new FilmEntry();
 
     @GetMapping("/films")
-    public List<String> searchFilms(@RequestParam String query) {
+    public List<String> searchFilms(@RequestParam String search) {
         try {
-            return filmEntry.searchFilmsByQuery(query);
+            return filmEntry.searchFilmsByQuery(search);
         } catch (Exception e) {
             e.printStackTrace();
             return List.of("Fehler bei der Suche nach Filmen: " + e.getMessage());

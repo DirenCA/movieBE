@@ -29,6 +29,10 @@ public class FilmEntry {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
         String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=" + encodedQuery;
 
+        if (encodedQuery.isEmpty()) {
+            throw new IllegalArgumentException("Query is empty");
+        }
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -42,6 +46,7 @@ public class FilmEntry {
 
         JSONObject jsonResponse = new JSONObject(response.body());
         JSONArray results = jsonResponse.getJSONArray("results");
+
 
         return results.toList().stream()
                 .map(item -> ((JSONObject)item).getString("title"))
