@@ -14,7 +14,7 @@ public class MyController {
     private FilmEntry filmEntry = new FilmEntry();
 
     @GetMapping("/films")
-    public List<String> searchFilms(@RequestParam String search) {
+    public List<String> searchFilms(@RequestParam String search) { //Hier wird der Suchbegriff als Parameter ("search") übergeben
         try {
             return filmEntry.searchFilmsByQuery(search);
         } catch (Exception e) {

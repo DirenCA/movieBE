@@ -1,12 +1,12 @@
 package de.htwberlin.webtech.moviediary.web.Rapi;
 
-public class Person {
+public class User {
 
     private long id;
     private String userName;
     private long password;
 
-    public Person(long id, long password, String userName) {
+    public User(long id, long password, String userName) {
         this.id = id;
         this.password = password;
         this.userName = userName;
