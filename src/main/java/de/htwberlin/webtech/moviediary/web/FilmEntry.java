@@ -20,12 +20,18 @@ public class FilmEntry {
 
     private static final String API_KEY = System.getenv("MOVIE_DB_API_KEY"); //Hier nehmen wir den Key aus der Umgebungsvariable
     private HttpClient client;
+    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // Basis-URL für Bilder
+
 
     public FilmEntry() {
         this.client = HttpClient.newHttpClient();
         if (API_KEY == null) {
             throw new IllegalArgumentException("MOVIE_DB_API_KEY is not set in the environment variables");
         }
+    }
+
+    public List<String> getPopularFilms() throws IOException, InterruptedException {
+
     }
 
     public List<String> searchFilmsByQuery(String query) throws IOException, InterruptedException {
@@ -60,4 +66,35 @@ public class FilmEntry {
         }
         return titles;
 }
+
+    public class Film {
+        private String title;
+        private String imageUrl;
+
+        public Film(String title, String imageUrl) {
+            this.title = title;
+            this.imageUrl = imageUrl;
+        }
+
+        // getters and setters
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+    }
 }
+
+}
+
+
