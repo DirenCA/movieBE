@@ -30,11 +30,9 @@ public class FilmEntry {
         }
     }
 
-    public List<String> getPopularFilms() throws IOException, InterruptedException {
+    //public List<String> getPopularFilms() throws IOException, InterruptedException {}
 
-    }
-
-    public List<String> searchFilmsByQuery(String query) throws IOException, InterruptedException {
+    public List<Film> searchFilmsByQuery(String query) throws IOException, InterruptedException {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
         String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=" + encodedQuery;
 
@@ -59,12 +57,13 @@ public class FilmEntry {
         JsonNode root = objectMapper.readTree(response.body());
         JsonNode results = root.path("results");
 
-        List<String> titles = new ArrayList<>();
+        List<Film> films = new ArrayList<>();
         for (JsonNode result : results) {
             String title = result.path("title").asText();
-            titles.add(title);
+            String imageUrl = IMAGE_BASE_URL + result.path("poster_path").asText();
+            films.add(new Film(title, imageUrl));
         }
-        return titles;
+        return films;
 }
 
     public class Film {

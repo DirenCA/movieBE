@@ -14,12 +14,12 @@ public class MyController {
     private FilmEntry filmEntry = new FilmEntry();
 
     @GetMapping("/films")
-    public List<String> searchFilms(@RequestParam String search) { //Hier wird der Suchbegriff als Parameter ("search") übergeben
+    public List<FilmEntry.Film> searchFilms(@RequestParam String search) {
         try {
             return filmEntry.searchFilmsByQuery(search);
         } catch (Exception e) {
             e.printStackTrace();
-            return List.of("Fehler bei der Suche nach Filmen: " + e.getMessage());
+            return List.of();
         }
     }
 }
