@@ -93,7 +93,6 @@ public class FilmEntry {
             this.imageUrl = imageUrl;
         }
     }
-}
 
 }
 
