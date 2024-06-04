@@ -22,4 +22,14 @@ public class MyController {
             return List.of();
         }
     }
+
+    @GetMapping("/popular")
+    public List<FilmEntry.Film> getPopularFilms() {
+        try {
+            return filmEntry.getPopularFilms();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
 }

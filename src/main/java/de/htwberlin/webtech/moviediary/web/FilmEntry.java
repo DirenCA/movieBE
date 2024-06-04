@@ -30,7 +30,33 @@ public class FilmEntry {
         }
     }
 
-    //public List<String> getPopularFilms() throws IOException, InterruptedException {}
+    public List<Film> getPopularFilms() throws IOException, InterruptedException {
+
+        String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=";
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new IOException("Failed to get response from the movie database API");
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root = objectMapper.readTree(response.body());
+        JsonNode results = root.path("results");
+
+        List<Film> films = new ArrayList<>();
+        for (JsonNode result : results) {
+            String title = result.path("title").asText();
+            String imageUrl = IMAGE_BASE_URL + result.path("poster_path").asText();
+            films.add(new Film(title, imageUrl));
+        }
+        return films;
+    }
 
     public List<Film> searchFilmsByQuery(String query) throws IOException, InterruptedException {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
