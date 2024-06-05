@@ -8,7 +8,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 @RestController
-@CrossOrigin(origins = "https://moviefrontend-lxaz.onrender.com") //http://localhost:3002" //Hier geben wir an, von welcher URL aus Anfragen angenommen werden sollen
+@CrossOrigin(origins = "https://moviefrontend-lxaz.onrender.com") //http://localhost:3002" //Hier geben wir an, von welcher URL aus Anfragen angenommen werden sollen https://moviefrontend-lxaz.onrender.com
 public class MyController {
 
     private FilmEntry filmEntry = new FilmEntry();

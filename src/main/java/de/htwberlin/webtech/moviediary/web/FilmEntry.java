@@ -32,7 +32,7 @@ public class FilmEntry {
 
     public List<Film> getPopularFilms() throws IOException, InterruptedException {
 
-        String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=";
+        String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY + "&language=en-US&page=1";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -53,9 +53,11 @@ public class FilmEntry {
         for (JsonNode result : results) {
             String title = result.path("title").asText();
             String imageUrl = IMAGE_BASE_URL + result.path("poster_path").asText();
-            films.add(new Film(title, imageUrl));
+            String overview = result.path("overview").asText();
+            films.add(new Film(title, imageUrl, overview));
         }
         return films;
+
     }
 
     public List<Film> searchFilmsByQuery(String query) throws IOException, InterruptedException {
@@ -87,18 +89,22 @@ public class FilmEntry {
         for (JsonNode result : results) {
             String title = result.path("title").asText();
             String imageUrl = IMAGE_BASE_URL + result.path("poster_path").asText();
-            films.add(new Film(title, imageUrl));
+            String overview = result.path("overview").asText();
+            films.add(new Film(title, imageUrl, overview));
         }
         return films;
 }
 
+
     public class Film {
         private String title;
         private String imageUrl;
+        private String overview;
 
-        public Film(String title, String imageUrl) {
+        public Film(String title, String imageUrl, String overview) {
             this.title = title;
             this.imageUrl = imageUrl;
+            this.overview = overview;
         }
 
         // getters and setters
@@ -116,6 +122,14 @@ public class FilmEntry {
 
         public void setImageUrl(String imageUrl) {
             this.imageUrl = imageUrl;
+        }
+
+        public String getOverview() {
+            return overview;
+        }
+
+        public void setOverview(String overview) {
+            this.overview = overview;
         }
     }
 
