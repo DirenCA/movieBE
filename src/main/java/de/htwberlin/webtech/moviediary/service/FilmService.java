@@ -1,7 +1,7 @@
-package de.htwberlin.webtech.moviediary.web.Rapi;
+package de.htwberlin.webtech.moviediary.service;
 
-import de.htwberlin.webtech.moviediary.web.FilmEntry;
-import de.htwberlin.webtech.moviediary.web.FilmRepository;
+import de.htwberlin.webtech.moviediary.model.FilmEntry;
+import de.htwberlin.webtech.moviediary.repository.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

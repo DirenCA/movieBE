@@ -1,4 +1,4 @@
-package de.htwberlin.webtech.moviediary.web;
+package de.htwberlin.webtech.moviediary.model;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.htwberlin.webtech.moviediary.repository.FilmRepository;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

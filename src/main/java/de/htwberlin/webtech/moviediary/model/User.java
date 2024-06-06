@@ -1,4 +1,4 @@
-package de.htwberlin.webtech.moviediary.web.Rapi;
+package de.htwberlin.webtech.moviediary.model;
 
 public class User {
 
