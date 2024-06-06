@@ -1,5 +1,6 @@
 package de.htwberlin.webtech.moviediary.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,10 +9,15 @@ import java.util.List;
 import org.json.JSONObject;
 
 @RestController
-@CrossOrigin(origins = "https://moviefrontend-lxaz.onrender.com") //http://localhost:3002" //Hier geben wir an, von welcher URL aus Anfragen angenommen werden sollen https://moviefrontend-lxaz.onrender.com
+@CrossOrigin(origins = "http://localhost:3003") //http://localhost:3003" //Hier geben wir an, von welcher URL aus Anfragen angenommen werden sollen https://moviefrontend-lxaz.onrender.com
 public class MyController {
 
-    private FilmEntry filmEntry = new FilmEntry();
+    private final FilmEntry filmEntry;
+
+    @Autowired
+    public MyController(FilmEntry filmEntry) {
+        this.filmEntry = filmEntry;
+    }
 
     @GetMapping("/films")
     public List<FilmEntry.Film> searchFilms(@RequestParam String search) {
