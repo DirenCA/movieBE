@@ -13,10 +13,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.htwberlin.webtech.moviediary.repository.FilmRepository;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -119,7 +116,7 @@ public class FilmEntry {
     }
 
     @Entity
-    public class Film {
+    public static class Film {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
@@ -141,6 +138,9 @@ public class FilmEntry {
 
         public Film() {
         }
+
+        @ManyToOne
+        private Watchlist watchlist;
 
         // getters and setters
         public String getTitle() {

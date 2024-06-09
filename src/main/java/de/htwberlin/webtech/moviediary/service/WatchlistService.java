@@ -21,17 +21,20 @@ public class WatchlistService {
     }
 
     public void addFilmToWatchlist(FilmEntry.Film film, Watchlist watchlist) {
+        System.out.println("Adding film to watchlist: " + film);
         watchlist.getFilms().add(film);
         repo.save(watchlist);
     }
 
     public void removeFilmFromWatchlist(FilmEntry.Film film, Watchlist watchlist) {
+        System.out.println("Removing film from watchlist: " + film);
         watchlist.getFilms().remove(film);
         repo.save(watchlist);
     }
 
     public Watchlist createWatchlist() {
         Watchlist watchlist = new Watchlist();
+        System.out.println("Creating new watchlist: " + watchlist);
         return repo.save(watchlist);
     }
 }

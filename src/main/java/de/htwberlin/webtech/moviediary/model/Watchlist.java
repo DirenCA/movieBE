@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,10 +16,11 @@ public class Watchlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany
+    @OneToMany(mappedBy = "watchlist")
     private List<FilmEntry.Film> films;
 
     public Watchlist() {
+        this.films = new ArrayList<>(); // Initialize the films list
     }
 
     public Watchlist(List<FilmEntry.Film> films) {
