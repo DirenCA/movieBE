@@ -1,15 +1,30 @@
 package de.htwberlin.webtech.moviediary.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String userName;
-    private long password;
+    private String password;
 
-    public User(long id, long password, String userName) {
-        this.id = id;
-        this.password = password;
+    @OneToOne
+    private Watchlist watchlist;
+
+    public User() {
+    }
+
+    public User(String userName, String password, Watchlist watchlist) {
         this.userName = userName;
+        this.password = password;
+        this.watchlist = watchlist;
     }
 
     public long getId() {
@@ -28,11 +43,11 @@ public class User {
         this.userName = userName;
     }
 
-    public long getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(long password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }
