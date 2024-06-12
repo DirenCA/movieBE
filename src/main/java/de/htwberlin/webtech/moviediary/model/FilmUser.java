@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class User {
+public class FilmUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +18,10 @@ public class User {
     @OneToOne
     private Watchlist watchlist;
 
-    public User() {
+    public FilmUser() {
     }
 
-    public User(String userName, String password, Watchlist watchlist) {
+    public FilmUser(String userName, String password, Watchlist watchlist) {
         this.userName = userName;
         this.password = password;
         this.watchlist = watchlist;
