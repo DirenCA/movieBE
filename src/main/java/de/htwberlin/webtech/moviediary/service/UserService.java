@@ -16,13 +16,24 @@ public class UserService {
     WatchlistService watchlistService;
 
     public FilmUser registerUser(String userName, String password) {
-        // Create a new watchlist for the user
         Watchlist watchlist = watchlistService.createWatchlist();
 
-        // Create a new user
         FilmUser filmUser = new FilmUser(userName, password, watchlist);
 
-        // Save the user in the database
         return repo.save(filmUser);
     }
+
+    public void deleteUser(FilmUser filmUser) {
+        repo.delete(filmUser);
+    }
+
+    public FilmUser loginUser (String userName, String password) {
+        FilmUser filmUser = repo.findByUserNameAndPassword(userName, password);
+        if (filmUser != null) {
+            return filmUser;
+        } else {
+            throw new IllegalArgumentException("User not found with username: " + userName);
+        }
+    }
+
 }
