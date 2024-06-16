@@ -32,7 +32,7 @@ public class UserService {
         if (filmUser != null) {
             return filmUser;
         } else {
-            throw new IllegalArgumentException("User not found with username: " + userName);
+            throw new IllegalArgumentException("Der Benutzer " + userName + " konnte nicht gefunden werden.");
         }
     }
 
