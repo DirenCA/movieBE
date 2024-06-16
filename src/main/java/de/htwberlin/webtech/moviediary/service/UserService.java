@@ -1,5 +1,6 @@
 package de.htwberlin.webtech.moviediary.service;
 
+import de.htwberlin.webtech.moviediary.exception.UserNotFoundException;
 import de.htwberlin.webtech.moviediary.model.FilmUser;
 import de.htwberlin.webtech.moviediary.model.Watchlist;
 import de.htwberlin.webtech.moviediary.repository.UserRepository;
@@ -27,13 +28,12 @@ public class UserService {
         repo.delete(filmUser);
     }
 
-    public FilmUser loginUser (String userName, String password) {
+    public FilmUser loginUser(String userName, String password) {
         FilmUser filmUser = repo.findByUserNameAndPassword(userName, password);
         if (filmUser != null) {
             return filmUser;
         } else {
-            throw new IllegalArgumentException("Der Benutzer " + userName + " konnte nicht gefunden werden.");
+            throw new UserNotFoundException(userName);
         }
     }
-
 }
