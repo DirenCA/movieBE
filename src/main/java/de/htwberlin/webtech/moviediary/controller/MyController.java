@@ -2,10 +2,13 @@ package de.htwberlin.webtech.moviediary.controller;
 
 import de.htwberlin.webtech.moviediary.model.FilmEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,6 +30,12 @@ public class MyController {
             e.printStackTrace();
             return List.of();
         }
+    }
+
+    @GetMapping("/top-rated")
+    public ResponseEntity<List<FilmEntry.Film>> getTopRatedFilms() throws IOException, InterruptedException {
+        List<FilmEntry.Film> films = filmEntry.getTopRatedFilms();
+        return ResponseEntity.ok(films);
     }
 
     @GetMapping("/popular")
