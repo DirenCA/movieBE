@@ -38,6 +38,11 @@ public class MyController {
         return ResponseEntity.ok(films);
     }
 
+    @GetMapping("/upcoming")
+    public List<FilmEntry.Film> getUpcomingFilms() throws IOException, InterruptedException {
+        return filmEntry.getUpcomingFilms();
+    }
+
     @GetMapping("/popular")
     public List<FilmEntry.Film> getPopularFilms() {
         try {
