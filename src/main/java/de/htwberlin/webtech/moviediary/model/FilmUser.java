@@ -15,7 +15,8 @@ public class FilmUser {
     private String password;
     private String token;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "filmUser")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "watchlist_id", referencedColumnName = "id")
     private Watchlist watchlist;
 
     public FilmUser() {

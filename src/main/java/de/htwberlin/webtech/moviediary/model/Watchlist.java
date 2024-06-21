@@ -23,9 +23,9 @@ public class Watchlist {
     )
     private Set<FilmEntry.Film> films = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "film_user_id")
+    @OneToOne(mappedBy = "watchlist")
     private FilmUser filmUser;
+
 
     public Watchlist() {}
 

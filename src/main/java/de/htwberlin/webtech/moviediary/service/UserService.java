@@ -27,6 +27,7 @@ public class UserService {
     public FilmUser registerUser(String userName, String password) {
         Watchlist watchlist = watchlistService.createWatchlist();
         FilmUser filmUser = new FilmUser(userName, password, watchlist);
+        watchlist.setFilmUser(filmUser); // Setzen des FilmUser in der Watchlist
         return repo.save(filmUser);
     }
 
