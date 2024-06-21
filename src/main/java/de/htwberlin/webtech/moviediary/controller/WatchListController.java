@@ -2,27 +2,30 @@ package de.htwberlin.webtech.moviediary.controller;
 
 import de.htwberlin.webtech.moviediary.model.FilmEntry;
 import de.htwberlin.webtech.moviediary.model.Watchlist;
-import de.htwberlin.webtech.moviediary.service.WatchlistService;
+import de.htwberlin.webtech.moviediary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3003")
 @RequestMapping("/watchlist")
+@CrossOrigin(origins = "http://localhost:3003")
 public class WatchListController {
 
-    private final WatchlistService watchlistService;
+    private final UserService userService;
 
     @Autowired
-    public WatchListController(WatchlistService watchlistService) {
-        this.watchlistService = watchlistService;
+    public WatchListController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> addToWatchlist(@RequestBody FilmEntry.Film film) {
-        Watchlist watchlist = watchlistService.createWatchlist();
-        watchlistService.addFilmToWatchlist(film, watchlist);
-        return ResponseEntity.ok().build();
+    @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Watchlist> addMovieToWatchlist(@RequestHeader("Authorization") String token, @RequestBody FilmEntry.Film film) {
+        try {
+            Watchlist watchlist = userService.addMovieToWatchlist(token, film);
+            return ResponseEntity.ok(watchlist);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 }

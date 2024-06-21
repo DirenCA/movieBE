@@ -4,10 +4,12 @@ import de.htwberlin.webtech.moviediary.exception.UserNotFoundException;
 import de.htwberlin.webtech.moviediary.model.FilmEntry;
 import de.htwberlin.webtech.moviediary.model.FilmUser;
 import de.htwberlin.webtech.moviediary.model.Watchlist;
+import de.htwberlin.webtech.moviediary.repository.FilmRepository;
 import de.htwberlin.webtech.moviediary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +20,9 @@ public class UserService {
 
     @Autowired
     private WatchlistService watchlistService;
+
+    @Autowired
+    private FilmRepository filmRepository;
 
     public FilmUser registerUser(String userName, String password) {
         Watchlist watchlist = watchlistService.createWatchlist();
@@ -54,7 +59,17 @@ public class UserService {
                 filmUser.setWatchlist(watchlist);
                 repo.save(filmUser);
             }
-            watchlistService.addFilmToWatchlist(film, watchlist); // Verwenden der WatchlistService Methode zum Hinzufügen des Films
+
+            // Prüfen, ob der Film bereits in der Datenbank vorhanden ist
+            Optional<FilmEntry.Film> existingFilm = filmRepository.findById(film.getId());
+            if (!existingFilm.isPresent()) {
+                film = filmRepository.save(film);
+            } else {
+                film = existingFilm.get();
+            }
+
+            watchlist.getFilms().add(film);
+            watchlistService.saveWatchlist(watchlist);
             return watchlist;
         } else {
             throw new UserNotFoundException("Invalid token: " + token);

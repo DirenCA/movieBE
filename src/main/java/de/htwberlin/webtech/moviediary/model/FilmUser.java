@@ -1,12 +1,11 @@
 package de.htwberlin.webtech.moviediary.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class FilmUser {
 
     @Id
@@ -14,9 +13,9 @@ public class FilmUser {
     private long id;
     private String userName;
     private String password;
-    private String token; // Hinzufügen der Token-Eigenschaft
+    private String token;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "filmUser")
     private Watchlist watchlist;
 
     public FilmUser() {
@@ -52,7 +51,6 @@ public class FilmUser {
         this.password = password;
     }
 
-    // Getter und Setter für die Token-Eigenschaft
     public String getToken() {
         return token;
     }

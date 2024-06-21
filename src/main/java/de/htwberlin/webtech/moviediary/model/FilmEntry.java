@@ -7,10 +7,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.htwberlin.webtech.moviediary.repository.FilmRepository;
@@ -35,6 +39,7 @@ public class FilmEntry {
             throw new IllegalArgumentException("MOVIE_DB_API_KEY is not set in the environment variables");
         }
     }
+
 
     public List<Film> getPopularFilms() throws IOException, InterruptedException {
         String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY + "&language=en-US&page=1";
@@ -190,7 +195,9 @@ public class FilmEntry {
     }
 
     @Entity
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public static class Film {
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
@@ -201,28 +208,34 @@ public class FilmEntry {
         private String voteAverage;
         private String genre;
 
+        @ManyToMany(mappedBy = "films")
+        private Set<Watchlist> watchlists = new HashSet<>();
+
         public Film(String title, String imageUrl, String overview, String releaseDate, String voteAverage, String genre) {
-            this.title = truncate(title, 255);
-            this.imageUrl = truncate(imageUrl, 255);
-            this.overview = truncate(overview, 255);
-            this.releaseDate = truncate(releaseDate, 255);
-            this.voteAverage = truncate(voteAverage, 255);
-            this.genre = truncate(genre, 255);
+            this.title = title;
+            this.imageUrl = imageUrl;
+            this.overview = overview;
+            this.releaseDate = releaseDate;
+            this.voteAverage = voteAverage;
+            this.genre = genre;
         }
 
-        public Film() {
+        public Film() {}
+
+        public long getId() {
+            return id;
         }
 
-        @ManyToOne
-        private Watchlist watchlist;
+        public void setId(long id) {
+            this.id = id;
+        }
 
-        // getters and setters
         public String getTitle() {
             return title;
         }
 
         public void setTitle(String title) {
-            this.title = truncate(title, 255);
+            this.title = title;
         }
 
         public String getImageUrl() {
@@ -230,7 +243,7 @@ public class FilmEntry {
         }
 
         public void setImageUrl(String imageUrl) {
-            this.imageUrl = truncate(imageUrl, 255);
+            this.imageUrl = imageUrl;
         }
 
         public String getOverview() {
@@ -238,7 +251,7 @@ public class FilmEntry {
         }
 
         public void setOverview(String overview) {
-            this.overview = truncate(overview, 255);
+            this.overview = overview;
         }
 
         public String getReleaseDate() {
@@ -246,7 +259,7 @@ public class FilmEntry {
         }
 
         public void setReleaseDate(String releaseDate) {
-            this.releaseDate = truncate(releaseDate, 255);
+            this.releaseDate = releaseDate;
         }
 
         public String getVoteAverage() {
@@ -254,7 +267,7 @@ public class FilmEntry {
         }
 
         public void setVoteAverage(String voteAverage) {
-            this.voteAverage = truncate(voteAverage, 255);
+            this.voteAverage = voteAverage;
         }
 
         public String getGenre() {
@@ -262,12 +275,15 @@ public class FilmEntry {
         }
 
         public void setGenre(String genre) {
-            this.genre = truncate(genre, 255);
+            this.genre = genre;
         }
 
-        private String truncate(String value, int length) {
-            if (value == null) return null;
-            return value.length() > length ? value.substring(0, length) : value;
+        public Set<Watchlist> getWatchlists() {
+            return watchlists;
+        }
+
+        public void setWatchlists(Set<Watchlist> watchlists) {
+            this.watchlists = watchlists;
         }
     }
 }

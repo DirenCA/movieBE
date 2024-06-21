@@ -1,26 +1,33 @@
 package de.htwberlin.webtech.moviediary.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Watchlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany(mappedBy = "watchlist", fetch = FetchType.EAGER)
-    private List<FilmEntry.Film> films;
+    @ManyToMany
+    @JoinTable(
+            name = "watchlist_film",
+            joinColumns = @JoinColumn(name = "watchlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_id")
+    )
+    private Set<FilmEntry.Film> films = new HashSet<>();
 
-    public Watchlist() {
-        this.films = new ArrayList<>(); // Initialize the films list
-    }
+    @OneToOne
+    @JoinColumn(name = "film_user_id")
+    private FilmUser filmUser;
 
-    public Watchlist(List<FilmEntry.Film> films) {
-        this.films = films;
-    }
+    public Watchlist() {}
 
     public long getId() {
         return id;
@@ -30,14 +37,19 @@ public class Watchlist {
         this.id = id;
     }
 
-    public List<FilmEntry.Film> getFilms() {
+    public Set<FilmEntry.Film> getFilms() {
         return films;
     }
 
-    public void setFilms(List<FilmEntry.Film> films) {
+    public void setFilms(Set<FilmEntry.Film> films) {
         this.films = films;
     }
 
-    public void addMovie(FilmEntry.Film film) {
+    public FilmUser getFilmUser() {
+        return filmUser;
+    }
+
+    public void setFilmUser(FilmUser filmUser) {
+        this.filmUser = filmUser;
     }
 }

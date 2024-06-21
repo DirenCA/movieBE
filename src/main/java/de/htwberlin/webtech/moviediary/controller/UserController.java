@@ -22,19 +22,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<FilmUser> registerUser(@RequestBody FilmUser filmUser) {
         FilmUser user = userService.registerUser(filmUser.getUserName(), filmUser.getPassword());
         return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping
+    @DeleteMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Void> deleteUser(@RequestBody FilmUser filmUser) {
         userService.deleteUser(filmUser);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<FilmUser> loginUser(@RequestBody FilmUser filmUser) {
         try {
             FilmUser user = userService.loginUser(filmUser.getUserName(), filmUser.getPassword());
@@ -46,13 +46,13 @@ public class UserController {
         }
     }
 
-    @PostMapping("/watchlist")
+    @PostMapping(value = "/watchlist", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Watchlist> addMovieToWatchlist(@RequestBody FilmEntry.Film film, @RequestHeader("Authorization") String token) {
         Watchlist watchlist = userService.addMovieToWatchlist(token, film);
         return ResponseEntity.ok(watchlist);
     }
 
-    @GetMapping("/watchlist")
+    @GetMapping(value = "/watchlist", produces = "application/json")
     public ResponseEntity<Watchlist> getWatchlist(@RequestHeader("Authorization") String token) {
         Watchlist watchlist = userService.getWatchlist(token);
         return ResponseEntity.ok(watchlist);
