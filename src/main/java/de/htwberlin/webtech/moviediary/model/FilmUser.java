@@ -14,6 +14,7 @@ public class FilmUser {
     private long id;
     private String userName;
     private String password;
+    private String token; // Hinzufügen der Token-Eigenschaft
 
     @OneToOne
     private Watchlist watchlist;
@@ -49,5 +50,22 @@ public class FilmUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    // Getter und Setter für die Token-Eigenschaft
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Watchlist getWatchlist() {
+        return watchlist;
+    }
+
+    public void setWatchlist(Watchlist watchlist) {
+        this.watchlist = watchlist;
     }
 }

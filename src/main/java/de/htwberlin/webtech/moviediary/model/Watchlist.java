@@ -1,11 +1,6 @@
 package de.htwberlin.webtech.moviediary.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +11,7 @@ public class Watchlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany(mappedBy = "watchlist")
+    @OneToMany(mappedBy = "watchlist", fetch = FetchType.EAGER)
     private List<FilmEntry.Film> films;
 
     public Watchlist() {
@@ -41,5 +36,8 @@ public class Watchlist {
 
     public void setFilms(List<FilmEntry.Film> films) {
         this.films = films;
+    }
+
+    public void addMovie(FilmEntry.Film film) {
     }
 }
