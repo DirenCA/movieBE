@@ -3,6 +3,7 @@ package de.htwberlin.webtech.moviediary.controller;
 import de.htwberlin.webtech.moviediary.exception.UserNotFoundException;
 import de.htwberlin.webtech.moviediary.model.FilmUser;
 import de.htwberlin.webtech.moviediary.model.FilmEntry;
+import de.htwberlin.webtech.moviediary.model.Rating;
 import de.htwberlin.webtech.moviediary.model.Watchlist;
 import de.htwberlin.webtech.moviediary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,11 @@ public class UserController {
     public ResponseEntity<Watchlist> getWatchlist(@RequestHeader("Authorization") String token) {
         Watchlist watchlist = userService.getWatchlist(token);
         return ResponseEntity.ok(watchlist);
+    }
+
+    @PostMapping("/rateFilm")
+    public Rating rateFilm(@RequestParam String token, @RequestParam long filmId, @RequestParam int ratingValue) {
+        System.out.println("rateFilm method called");
+        return userService.rateFilm(token, filmId, ratingValue);
     }
 }

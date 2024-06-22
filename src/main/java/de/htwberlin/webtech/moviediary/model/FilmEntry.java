@@ -211,6 +211,9 @@ public class FilmEntry {
         @ManyToMany(mappedBy = "films")
         private Set<Watchlist> watchlists = new HashSet<>();
 
+        @OneToMany(mappedBy = "film")
+        private Set<Rating> ratings = new HashSet<>();
+
         public Film(String title, String imageUrl, String overview, String releaseDate, String voteAverage, String genre) {
             this.title = title;
             this.imageUrl = imageUrl;

@@ -3,8 +3,10 @@ package de.htwberlin.webtech.moviediary.service;
 import de.htwberlin.webtech.moviediary.exception.UserNotFoundException;
 import de.htwberlin.webtech.moviediary.model.FilmEntry;
 import de.htwberlin.webtech.moviediary.model.FilmUser;
+import de.htwberlin.webtech.moviediary.model.Rating;
 import de.htwberlin.webtech.moviediary.model.Watchlist;
 import de.htwberlin.webtech.moviediary.repository.FilmRepository;
+import de.htwberlin.webtech.moviediary.repository.RatingRepository;
 import de.htwberlin.webtech.moviediary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,24 @@ public class UserService {
 
     @Autowired
     private FilmRepository filmRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository; // Sie müssen dieses Repository erstellen
+
+    public Rating rateFilm(String token, long filmId, int ratingValue) {
+        FilmUser filmUser = repo.findByToken(token);
+        if (filmUser != null) {
+            Optional<FilmEntry.Film> film = filmRepository.findById(filmId);
+            if (film.isPresent()) {
+                Rating rating = new Rating(filmUser, film.get(), ratingValue);
+                return ratingRepository.save(rating);
+            } else {
+                throw new UserNotFoundException("Film not found: " + filmId);
+            }
+        } else {
+            throw new UserNotFoundException("Invalid token: " + token);
+        }
+    }
 
     public FilmUser registerUser(String userName, String password) {
         Watchlist watchlist = watchlistService.createWatchlist();

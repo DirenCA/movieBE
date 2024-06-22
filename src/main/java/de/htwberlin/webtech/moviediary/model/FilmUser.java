@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class FilmUser {
@@ -18,6 +21,9 @@ public class FilmUser {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "watchlist_id", referencedColumnName = "id")
     private Watchlist watchlist;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Rating> ratings = new HashSet<>();
 
     public FilmUser() {
     }
