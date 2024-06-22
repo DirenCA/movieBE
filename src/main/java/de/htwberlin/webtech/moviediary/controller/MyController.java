@@ -32,6 +32,11 @@ public class MyController {
         }
     }
 
+    @GetMapping("/discover")
+    public List<FilmEntry.Film> getDiscoverFilms() throws IOException, InterruptedException {
+        return filmEntry.getDiscoverFilms();
+    }
+
     @GetMapping("/top-rated")
     public ResponseEntity<List<FilmEntry.Film>> getTopRatedFilms() throws IOException, InterruptedException {
         List<FilmEntry.Film> films = filmEntry.getTopRatedFilms();

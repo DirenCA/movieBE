@@ -53,6 +53,18 @@ public class UserController {
         return ResponseEntity.ok(watchlist);
     }
 
+    @GetMapping("/isMovieInWatchlist")
+    public ResponseEntity<Boolean> isMovieInWatchlist(@RequestParam String token, @RequestParam long filmId) {
+        boolean isInWatchlist = userService.isMovieInWatchlist(token, filmId);
+        return ResponseEntity.ok(isInWatchlist);
+    }
+
+    @DeleteMapping(value = "/watchlist", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Watchlist> removeMovieFromWatchlist(@RequestBody FilmEntry.Film film, @RequestHeader("Authorization") String token) {
+        Watchlist watchlist = userService.removeMovieFromWatchlist(token, film.getId());
+        return ResponseEntity.ok(watchlist);
+    }
+
     @GetMapping(value = "/watchlist", produces = "application/json")
     public ResponseEntity<Watchlist> getWatchlist(@RequestHeader("Authorization") String token) {
         Watchlist watchlist = userService.getWatchlist(token);

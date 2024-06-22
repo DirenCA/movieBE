@@ -7,10 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -28,7 +25,7 @@ public class FilmEntry {
     private final FilmRepository filmRepository;
     private final HttpClient client;
 
-    private static final String API_KEY = System.getenv("MOVIE_DB_API_KEY"); //Hier nehmen wir den Key aus der Umgebungsvariable
+    private static final String API_KEY = System.getenv("MOVIE_DB_API_KEY"); // Hier nehmen wir den Key aus der Umgebungsvariable
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // Basis-URL für Bilder
 
     @Autowired
@@ -40,115 +37,20 @@ public class FilmEntry {
         }
     }
 
+    public List<Film> getDiscoverFilms() throws IOException, InterruptedException {
+        return fetchFilmsFromApi("https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&language=en-US&page=1");
+    }
 
     public List<Film> getPopularFilms() throws IOException, InterruptedException {
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY + "&language=en-US&page=1";
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            throw new IOException("Failed to get response from the movie database API");
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode root = objectMapper.readTree(response.body());
-        JsonNode results = root.path("results");
-
-        List<Film> films = new ArrayList<>();
-        for (JsonNode result : results) {
-            String title = truncate(result.path("title").asText(), 255);
-            String imageUrl = truncate(IMAGE_BASE_URL + result.path("poster_path").asText(), 255);
-            String overview = truncate(result.path("overview").asText(), 255);
-            String releaseDate = truncate(result.path("release_date").asText(), 255);
-            String voteAverage = truncate(result.path("vote_average").asText(), 255);
-            String genre = truncate(result.path("genre_ids").asText(), 255);
-            Film film = new Film(title, imageUrl, overview, releaseDate, voteAverage, genre);
-            films.add(film);
-            filmRepository.save(film);
-
-            System.out.println("Saved film: " + film.getTitle()); // Debugging line
-        }
-        System.out.println("Total films fetched: " + films.size()); // Debugging line
-
-        return films;
+        return fetchFilmsFromApi("https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY + "&language=en-US&page=1");
     }
 
     public List<Film> getTopRatedFilms() throws IOException, InterruptedException {
-    String url = "https://api.themoviedb.org/3/movie/top_rated?api_key=" + API_KEY + "&language=en-US&page=1";
-
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
-
-    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-    if (response.statusCode() != 200) {
-        throw new IOException("Failed to get response from the movie database API");
+        return fetchFilmsFromApi("https://api.themoviedb.org/3/movie/top_rated?api_key=" + API_KEY + "&language=en-US&page=1");
     }
-
-    ObjectMapper objectMapper = new ObjectMapper();
-    JsonNode root = objectMapper.readTree(response.body());
-    JsonNode results = root.path("results");
-
-    List<Film> films = new ArrayList<>();
-    for (JsonNode result : results) {
-        String title = truncate(result.path("title").asText(), 255);
-        String imageUrl = truncate(IMAGE_BASE_URL + result.path("poster_path").asText(), 255);
-        String overview = truncate(result.path("overview").asText(), 255);
-        String releaseDate = truncate(result.path("release_date").asText(), 255);
-        String voteAverage = truncate(result.path("vote_average").asText(), 255);
-        String genre = truncate(result.path("genre_ids").asText(), 255);
-        Film film = new Film(title, imageUrl, overview, releaseDate, voteAverage, genre);
-        films.add(film);
-        filmRepository.save(film);
-
-        System.out.println("Saved film: " + film.getTitle()); // Debugging line
-    }
-    System.out.println("Total films fetched: " + films.size()); // Debugging line
-
-    return films;
-}
 
     public List<Film> getUpcomingFilms() throws IOException, InterruptedException {
-        String url = "https://api.themoviedb.org/3/movie/upcoming?api_key=" + API_KEY + "&language=en-US&page=1";
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != 200) {
-            throw new IOException("Failed to get response from the movie database API");
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode root = objectMapper.readTree(response.body());
-        JsonNode results = root.path("results");
-
-        List<Film> films = new ArrayList<>();
-        for (JsonNode result : results) {
-            String title = truncate(result.path("title").asText(), 255);
-            String imageUrl = truncate(IMAGE_BASE_URL + result.path("poster_path").asText(), 255);
-            String overview = truncate(result.path("overview").asText(), 255);
-            String releaseDate = truncate(result.path("release_date").asText(), 255);
-            String voteAverage = truncate(result.path("vote_average").asText(), 255);
-            String genre = truncate(result.path("genre_ids").asText(), 255);
-            Film film = new Film(title, imageUrl, overview, releaseDate, voteAverage, genre);
-            films.add(film);
-            filmRepository.save(film);
-
-            System.out.println("Saved film: " + film.getTitle()); // Debugging line
-        }
-        System.out.println("Total films fetched: " + films.size()); // Debugging line
-
-        return films;
+        return fetchFilmsFromApi("https://api.themoviedb.org/3/movie/upcoming?api_key=" + API_KEY + "&language=en-US&page=1");
     }
 
     public List<Film> searchFilmsByQuery(String query) throws IOException, InterruptedException {
@@ -159,6 +61,10 @@ public class FilmEntry {
             throw new IllegalArgumentException("Query is empty");
         }
 
+        return fetchFilmsFromApi(url);
+    }
+
+    private List<Film> fetchFilmsFromApi(String url) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -170,22 +76,31 @@ public class FilmEntry {
             throw new IOException("Failed to get response from the movie database API");
         }
 
-        //Das JSON-Objekt parsen
-        //Durch den Object-Mapper kann ich nun
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(response.body());
         JsonNode results = root.path("results");
 
         List<Film> films = new ArrayList<>();
         for (JsonNode result : results) {
+            long id = result.path("id").asLong();
             String title = truncate(result.path("title").asText(), 255);
             String imageUrl = truncate(IMAGE_BASE_URL + result.path("poster_path").asText(), 255);
             String overview = truncate(result.path("overview").asText(), 255);
             String releaseDate = truncate(result.path("release_date").asText(), 255);
             String voteAverage = truncate(result.path("vote_average").asText(), 255);
             String genre = truncate(result.path("genre_ids").asText(), 255);
-            films.add(new Film(title, imageUrl, overview, releaseDate, voteAverage, genre));
+            Film film = new Film(id, title, imageUrl, overview, releaseDate, voteAverage, genre);
+
+            // Prüfen, ob der Film bereits in der Datenbank vorhanden ist
+            if (!filmRepository.existsById(id)) {
+                filmRepository.save(film);
+                System.out.println("Saved film: " + film.getTitle()); // Debugging line
+            }
+
+            films.add(film);
         }
+        System.out.println("Total films fetched: " + films.size()); // Debugging line
+
         return films;
     }
 
@@ -199,8 +114,7 @@ public class FilmEntry {
     public static class Film {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private long id;
+        private long id; // Verwende die TMDb-Film-ID als Primärschlüssel
         private String title;
         private String imageUrl;
         private String overview;
@@ -214,7 +128,8 @@ public class FilmEntry {
         @OneToMany(mappedBy = "film")
         private Set<Rating> ratings = new HashSet<>();
 
-        public Film(String title, String imageUrl, String overview, String releaseDate, String voteAverage, String genre) {
+        public Film(long id, String title, String imageUrl, String overview, String releaseDate, String voteAverage, String genre) {
+            this.id = id;
             this.title = title;
             this.imageUrl = imageUrl;
             this.overview = overview;

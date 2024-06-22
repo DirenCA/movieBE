@@ -80,7 +80,6 @@ public class UserService {
                 filmUser.setWatchlist(watchlist);
                 repo.save(filmUser);
             }
-
             // Prüfen, ob der Film bereits in der Datenbank vorhanden ist
             Optional<FilmEntry.Film> existingFilm = filmRepository.findById(film.getId());
             if (!existingFilm.isPresent()) {
@@ -95,6 +94,28 @@ public class UserService {
         } else {
             throw new UserNotFoundException("Invalid token: " + token);
         }
+    }
+
+    public boolean isMovieInWatchlist(String token, long filmId) {
+        FilmUser filmUser = repo.findByToken(token);
+        if (filmUser != null) {
+            Watchlist watchlist = filmUser.getWatchlist();
+            return watchlist.getFilms().stream().anyMatch(film -> film.getId() == filmId);
+        } else {
+            throw new UserNotFoundException("Invalid token: " + token);
+        }
+    }
+
+    public Watchlist removeMovieFromWatchlist(String token, long filmId) {
+    FilmUser filmUser = repo.findByToken(token);
+    if (filmUser != null) {
+        Watchlist watchlist = filmUser.getWatchlist();
+        watchlist.getFilms().removeIf(film -> film.getId() == filmId);
+        watchlistService.saveWatchlist(watchlist);
+        return watchlist;
+    } else {
+        throw new UserNotFoundException("Invalid token: " + token);
+    }
     }
 
     public Watchlist getWatchlist(String token) {
