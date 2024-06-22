@@ -109,15 +109,15 @@ public class UserService {
     }
 
     public Watchlist removeMovieFromWatchlist(String token, long filmId) {
-        FilmUser filmUser = repo.findByToken(token);
-        if (filmUser != null) {
-            Watchlist watchlist = filmUser.getWatchlist();
-            watchlist.getFilms().removeIf(film -> film.getId() == filmId);
-            watchlistService.saveWatchlist(watchlist);
-            return watchlist;
-        } else {
-            throw new UserNotFoundException("Invalid token: " + token);
-        }
+    FilmUser filmUser = repo.findByToken(token);
+    if (filmUser != null) {
+        Watchlist watchlist = filmUser.getWatchlist();
+        watchlist.getFilms().removeIf(film -> film.getId() == filmId);
+        watchlistService.saveWatchlist(watchlist);
+        return watchlist;
+    } else {
+        throw new UserNotFoundException("Invalid token: " + token);
+    }
     }
 
     public List<FilmEntry.Film> getWatchlist(String token) {
@@ -125,7 +125,20 @@ public class UserService {
         if (filmUser != null) {
             Watchlist watchlist = filmUser.getWatchlist();
             if (watchlist != null) {
-                return new ArrayList<>(watchlist.getFilms());
+                List<FilmEntry.Film> films = new ArrayList<>();
+                for (FilmEntry.Film film : watchlist.getFilms()) {
+                    if (film.getTitle() == null || film.getImageUrl() == null) {
+                        // Wenn der Film nur eine ID ist, holen Sie den vollständigen Film aus der Datenbank
+                        Optional<FilmEntry.Film> fullFilm = filmRepository.findById(film.getId());
+                        if (fullFilm.isPresent()) {
+                            films.add(fullFilm.get());
+                        }
+                    } else {
+                        // Wenn der Film bereits vollständig ist, fügen Sie ihn einfach zur Liste hinzu
+                        films.add(film);
+                    }
+                }
+                return films;
             } else {
                 return new ArrayList<>();
             }
