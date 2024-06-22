@@ -11,6 +11,8 @@ import de.htwberlin.webtech.moviediary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -107,21 +109,26 @@ public class UserService {
     }
 
     public Watchlist removeMovieFromWatchlist(String token, long filmId) {
-    FilmUser filmUser = repo.findByToken(token);
-    if (filmUser != null) {
-        Watchlist watchlist = filmUser.getWatchlist();
-        watchlist.getFilms().removeIf(film -> film.getId() == filmId);
-        watchlistService.saveWatchlist(watchlist);
-        return watchlist;
-    } else {
-        throw new UserNotFoundException("Invalid token: " + token);
-    }
-    }
-
-    public Watchlist getWatchlist(String token) {
         FilmUser filmUser = repo.findByToken(token);
         if (filmUser != null) {
-            return filmUser.getWatchlist();
+            Watchlist watchlist = filmUser.getWatchlist();
+            watchlist.getFilms().removeIf(film -> film.getId() == filmId);
+            watchlistService.saveWatchlist(watchlist);
+            return watchlist;
+        } else {
+            throw new UserNotFoundException("Invalid token: " + token);
+        }
+    }
+
+    public List<FilmEntry.Film> getWatchlist(String token) {
+        FilmUser filmUser = repo.findByToken(token);
+        if (filmUser != null) {
+            Watchlist watchlist = filmUser.getWatchlist();
+            if (watchlist != null) {
+                return new ArrayList<>(watchlist.getFilms());
+            } else {
+                return new ArrayList<>();
+            }
         } else {
             throw new UserNotFoundException("Invalid token: " + token);
         }

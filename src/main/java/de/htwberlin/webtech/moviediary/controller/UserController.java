@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@CrossOrigin(origins = "http://localhost:3003")
+@CrossOrigin(origins = "http://localhost:3003", allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/user")
 public class UserController {
 
@@ -66,8 +68,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/watchlist", produces = "application/json")
-    public ResponseEntity<Watchlist> getWatchlist(@RequestHeader("Authorization") String token) {
-        Watchlist watchlist = userService.getWatchlist(token);
+    public ResponseEntity<List<FilmEntry.Film>> getWatchlist(@RequestHeader("Authorization") String token) {
+        List<FilmEntry.Film> watchlist = userService.getWatchlist(token);
         return ResponseEntity.ok(watchlist);
     }
 
@@ -77,3 +79,5 @@ public class UserController {
         return userService.rateFilm(token, filmId, ratingValue);
     }
 }
+
+
