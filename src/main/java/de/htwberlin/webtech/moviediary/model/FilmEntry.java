@@ -128,6 +128,17 @@ public class FilmEntry {
         @OneToMany(mappedBy = "film")
         private Set<Rating> ratings = new HashSet<>();
 
+        //Gibt die Film-Objekte als String zurück. Zum Prüfen, ob die Filme korrekt gespeichert wurden.
+        @Override
+        public String toString() {
+            return "FilmEntry.Film{" +
+                    "id=" + id +
+                    ", title='" + title + '\'' +
+                    ", imageUrl='" + imageUrl + '\'' +
+                    ", release='" + releaseDate + '\'' +
+                    '}';
+        }
+
         public Film(long id, String title, String imageUrl, String overview, String releaseDate, String voteAverage, String genre) {
             this.id = id;
             this.title = title;

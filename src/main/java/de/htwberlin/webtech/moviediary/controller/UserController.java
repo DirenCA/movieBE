@@ -70,6 +70,7 @@ public class UserController {
     @GetMapping(value = "/watchlist", produces = "application/json")
     public ResponseEntity<List<FilmEntry.Film>> getWatchlist(@RequestHeader("Authorization") String token) {
         List<FilmEntry.Film> watchlist = userService.getWatchlist(token);
+        System.out.println("Watchlist: " + watchlist);
         return ResponseEntity.ok(watchlist);
     }
 
