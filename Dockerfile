@@ -1,7 +1,7 @@
 # Build stage
 FROM gradle:8-jdk21-jammy AS build
-WORKDIR /app
-COPY . ./
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
 
 # Fügen Sie die ARG- und ENV-Anweisungen hinzu
 ARG movieApp_Password
