@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/watchlist")
-@CrossOrigin(origins = "http://localhost:3003")
+@CrossOrigin(origins = "https://moviefrontend-lxaz.onrender.com")
 public class WatchListController {
 
     private final UserService userService;
