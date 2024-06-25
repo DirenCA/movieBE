@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/watchlist")
-@CrossOrigin(origins = "https://moviefrontend-lxaz.onrender.com")
+@CrossOrigin(origins = {"https://moviefrontend-lxaz.onrender.com", "https://moviebe-5i9h.onrender.com"}, allowedHeaders = "*", allowCredentials = "true")
 public class WatchListController {
 
     private final UserService userService;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "https://moviefrontend-lxaz.onrender.com", allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = {"https://moviefrontend-lxaz.onrender.com", "https://moviebe-5i9h.onrender.com"}, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/user")
 public class UserController {
 
