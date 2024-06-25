@@ -1,6 +1,8 @@
 FROM gradle:8-jdk21-jammy AS build
 WORKDIR /
 COPY . ./
+ARG movieApp_Password
+ARG movieApp_Username
 RUN gradle build
 
 FROM openjdk:21-slim
