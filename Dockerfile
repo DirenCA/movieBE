@@ -13,10 +13,10 @@ RUN gradle build --no-daemon
 
 # Runtime stage
 FROM openjdk:21-slim
-WORKDIR /app
+# WORKDIR /app
 
 # Fügen Sie die ENV-Anweisung hinzu, um sicherzustellen, dass die Umgebungsvariable zur Laufzeit verfügbar ist
 ENV MOVIE_DB_API_KEY=${MOVIE_DB_API_KEY}
 
-COPY --from=build /app/build/libs/moviediary-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /home/gradle/src/build/libs/moviediary-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
