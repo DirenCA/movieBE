@@ -1,7 +1,7 @@
 FROM gradle:8-jdk21-jammy AS build
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-RUN gradle build --no-daemon
+WORKDIR /
+COPY . ./
+RUN gradle build
 
 FROM openjdk:21-slim
 COPY --from=build /home/gradle/src/build/libs/moviediary-0.0.1-SNAPSHOT.jar app.jar
