@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins("https://moviefrontend-lxaz.onrender.com" , "https://moviebe-5i9h.onrender.com", "http://localhost:3003")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);
