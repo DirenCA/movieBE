@@ -37,8 +37,8 @@ public class FilmEntry {
         }
     }
 
-    public List<Film> getDiscoverFilms() throws IOException, InterruptedException {
-        return fetchFilmsFromApi("https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&language=en-US&page=1");
+    public List<Film> getDiscoverFilms(int page) throws IOException, InterruptedException {
+        return fetchFilmsFromApi("https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&language=en-US&page=" + page);
     }
 
     public List<Film> getPopularFilms() throws IOException, InterruptedException {

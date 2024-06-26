@@ -33,8 +33,8 @@ public class MyController {
     }
 
     @GetMapping("/discover")
-    public List<FilmEntry.Film> getDiscoverFilms() throws IOException, InterruptedException {
-        return filmEntry.getDiscoverFilms();
+    public List<FilmEntry.Film> getDiscoverFilms(@RequestParam(defaultValue = "1") int page) throws IOException, InterruptedException {
+        return filmEntry.getDiscoverFilms(page);
     }
 
     @GetMapping("/top-rated")
