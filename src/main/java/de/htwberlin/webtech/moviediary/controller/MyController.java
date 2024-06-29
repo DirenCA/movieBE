@@ -33,10 +33,8 @@ public class MyController {
     }
 
     @GetMapping("/discover")
-    public List<FilmEntry.Film> discoverFilms(@RequestParam int page,
-                                              @RequestParam(required = false) String genre,
-                                              @RequestParam(required = false) String year) throws IOException, InterruptedException {
-        return filmEntry.getDiscoverFilms(page, genre, year);
+    public List<FilmEntry.Film> getDiscoverFilms(@RequestParam(defaultValue = "1") int page) throws IOException, InterruptedException {
+        return filmEntry.getDiscoverFilms(page);
     }
 
     @GetMapping("/top-rated")

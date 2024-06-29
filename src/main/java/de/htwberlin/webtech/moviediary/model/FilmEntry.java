@@ -37,17 +37,9 @@ public class FilmEntry {
         }
     }
 
-    public List<Film> getDiscoverFilms(int page, String genre, String year) throws IOException, InterruptedException {
-        StringBuilder urlBuilder = new StringBuilder("https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&language=en-US&page=" + page);
-        if (genre != null && !genre.isEmpty()) {
-            urlBuilder.append("&with_genres=").append(URLEncoder.encode(genre, StandardCharsets.UTF_8));
-        }
-        if (year != null && !year.isEmpty()) {
-            urlBuilder.append("&primary_release_year=").append(URLEncoder.encode(year, StandardCharsets.UTF_8));
-        }
-        return fetchFilmsFromApi(urlBuilder.toString());
+    public List<Film> getDiscoverFilms(int page) throws IOException, InterruptedException {
+        return fetchFilmsFromApi("https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&language=en-US&page=" + page);
     }
-
 
     public List<Film> getPopularFilms() throws IOException, InterruptedException {
         return fetchFilmsFromApi("https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY + "&language=en-US&page=1");
