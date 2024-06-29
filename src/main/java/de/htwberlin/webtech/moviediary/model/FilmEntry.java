@@ -64,7 +64,8 @@ public class FilmEntry {
         return fetchFilmsFromApi(url);
     }
 
-    private List<Film> fetchFilmsFromApi(String url) throws IOException, InterruptedException {
+    private Map<Integer, String> fetchGenresFromApi() throws IOException, InterruptedException {
+        String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=" + API_KEY + "&language=en-US";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -78,6 +79,34 @@ public class FilmEntry {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(response.body());
+        JsonNode genres = root.path("genres");
+
+        Map<Integer, String> genreMap = new HashMap<>();
+        for (JsonNode genre : genres) {
+            int id = genre.path("id").asInt();
+            String name = genre.path("name").asText();
+            genreMap.put(id, name);
+        }
+
+        return genreMap;
+    }
+
+    private List<Film> fetchFilmsFromApi(String url) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new IOException("Failed to get response from the movie database API");
+        }
+
+        Map<Integer, String> genreMap = fetchGenresFromApi(); // Abrufen Genre-Liste
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root = objectMapper.readTree(response.body());
         JsonNode results = root.path("results");
 
         List<Film> films = new ArrayList<>();
@@ -88,7 +117,17 @@ public class FilmEntry {
             String overview = truncate(result.path("overview").asText(), 255);
             String releaseDate = truncate(result.path("release_date").asText(), 255);
             String voteAverage = truncate(result.path("vote_average").asText(), 255);
-            String genre = truncate(result.path("genre_ids").asText(), 255);
+            String genreIds = result.path("genre_ids").asText();
+            String[] ids = genreIds.split(",");
+            List<String> genreNames = new ArrayList<>();
+            for (String genreIdStr : ids) {
+                int genreId = Integer.parseInt(genreIdStr.trim());
+                String genreName = genreMap.get(genreId);
+                if (genreName != null) {
+                    genreNames.add(genreName);
+                }
+            }
+            String genre = String.join(", ", genreNames);
             Film film = new Film(id, title, imageUrl, overview, releaseDate, voteAverage, genre);
 
             // Prüfen, ob der Film bereits in der Datenbank vorhanden ist
