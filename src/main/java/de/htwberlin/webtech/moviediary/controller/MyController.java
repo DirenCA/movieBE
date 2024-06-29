@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = {"https://moviefrontend-lxaz.onrender.com", "https://moviebe-5i9h.onrender.com"}, allowedHeaders = "*", allowCredentials = "true") //http://localhost:3003" //Hier geben wir an, von welcher URL aus Anfragen angenommen werden sollen https://moviefrontend-lxaz.onrender.com
@@ -55,6 +56,16 @@ public class MyController {
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
+        }
+    }
+
+    @GetMapping("/film")
+    public ResponseEntity<FilmEntry.Film> getFilm(@RequestParam long filmId) {
+        try {
+            FilmEntry.Film film = filmEntry.getFilm(filmId);
+            return ResponseEntity.ok(film);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

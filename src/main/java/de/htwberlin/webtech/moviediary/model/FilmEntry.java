@@ -64,6 +64,16 @@ public class FilmEntry {
         return fetchFilmsFromApi(url);
     }
 
+    //für den Test
+    public Film getFilm(long id) {
+        Optional<Film> optionalFilm = filmRepository.findById(id);
+        if (optionalFilm.isPresent()) {
+            return optionalFilm.get();
+        } else {
+            throw new NoSuchElementException("No film found with id " + id);
+        }
+    }
+
     private List<Film> fetchFilmsFromApi(String url) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
