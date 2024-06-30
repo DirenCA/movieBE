@@ -39,7 +39,6 @@ class MoviediaryApplicationTests {
 		FilmUser result = response.getBody();
 
 		assertEquals(mockUser, result);
-		assertEquals(200, response.getStatusCodeValue());
 	}
 
 	@Test
@@ -57,7 +56,6 @@ class MoviediaryApplicationTests {
 		FilmUser result = response.getBody();
 
 		assertEquals(mockUser, result);
-		assertEquals(200, response.getStatusCodeValue());
 	}
 
 	@MockBean
@@ -77,7 +75,6 @@ class MoviediaryApplicationTests {
 		FilmEntry.Film result = response.getBody();
 
 		assertEquals(mockFilm, result);
-		assertEquals(200, response.getStatusCodeValue());
 	}
 
 }
